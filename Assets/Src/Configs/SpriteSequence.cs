@@ -9,6 +9,8 @@ namespace Platformer.Configs
     public sealed class SpriteSequence
     {
         public AnimState Track;
+        public bool Loop;
+        public float Speed;
         public List<Sprite> Sprites = new List<Sprite>();
     }
 }

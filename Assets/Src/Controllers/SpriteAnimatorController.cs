@@ -19,41 +19,42 @@ namespace Platformer.Controllers
             _config = config;
         }
 
-        public void StartAnimation(SpriteRenderer spriteRenderer, AnimState track, bool loop, float speed)
+        public void StartAnimation(SpriteRenderer spriteRenderer, AnimState track)
         {
             if (_activeAnimation.TryGetValue(spriteRenderer, out var animation))
             {
-                ChangeAnimation(animation, track, loop, speed);
+                ChangeAnimation(animation, track);
             }
             else
             {
-                AddAnimation(spriteRenderer, track, loop, speed);
+                AddAnimation(spriteRenderer, track);
             }
         }
 
-        private void ChangeAnimation(SequenceAnimation animation, AnimState track, bool loop, float speed)
+        private void ChangeAnimation(SequenceAnimation animation, AnimState track)
         {
             animation.Sleep = false;
-            animation.Loop = loop;
-            animation.Speed = speed;
-            animation.Counter = 0;
+            
             if (animation.Track != track)
             {
+                var config = _config.Sequences.Find(sequence => sequence.Track == track);
                 animation.Track = track;
-                animation.Sprites = _config.Sequences.Find(sequence => sequence.Track == track).Sprites;
+                animation.Sprites = config.Sprites;
+                animation.Counter = 0;
             }
         }
 
-        private void AddAnimation(SpriteRenderer spriteRenderer, AnimState track, bool loop, float speed)
+        private void AddAnimation(SpriteRenderer spriteRenderer, AnimState track)
         {
+            var config = _config.Sequences.Find(sequence => sequence.Track == track);
             _activeAnimation.Add(
                 spriteRenderer,
                 new SequenceAnimation()
                 {
-                    Loop = loop,
-                    Speed = speed,
-                    Track = track,
-                    Sprites = _config.Sequences.Find(sequence => sequence.Track == track).Sprites
+                    Loop = config.Loop,
+                    Speed = config.Speed,
+                    Track = config.Track,
+                    Sprites = config.Sprites
                 });
         }
 
