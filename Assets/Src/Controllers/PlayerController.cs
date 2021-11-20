@@ -14,36 +14,38 @@ namespace Src.Controllers
 
         private readonly LevelObjectView _view;
         private readonly SpriteAnimatorController _spriteAnimator;
+        private readonly ContactPooler _contactPooler;
         
         private float _xAxisInput;
 
         private bool _isJump;
         private bool _isMoving;
 
-        private float _movingSpeed = 3f;
+        private float _movingSpeed = 140f;
         private float _movingThreshold = 0.1f;
-        private float _jumpSpeed = 5f;
+        private float _jumpSpeed = 6;
         private float _jumpThreshold = 1f;
 
-        private float _gravity = -9.8f;
-        private float _groundLevel = -3.0f;
+        private float _xVelocity;
         private float _yVelocity;
 
         private int MovingDirection => _xAxisInput < 0 ? -1 : 1;
         private Vector3 ScaleDirection => _xAxisInput < 0 ? _leftScale : _rightScale;
-        private bool IsGrounded => _view.Transform.position.y <= _groundLevel && _yVelocity <= 0;
-        private bool IsNeedJump => _isJump && _yVelocity <= 0;
+        private bool IsGrounded => _contactPooler.IsGrounded;
+        private bool IsNeedJump => _isJump && Mathf.Abs(_view.Rigidbody.velocity.y) <= _jumpThreshold;
         
         public PlayerController(LevelObjectView player, SpriteAnimatorController spriteAnimator)
         {
             _view = player;
             _spriteAnimator = spriteAnimator;
             ChangeAnimation(AnimState.Idle);
+            _contactPooler = new ContactPooler(_view.Collider);
         }
         
         public void Update()
         {
             _spriteAnimator.Update();
+            _contactPooler.Update();
 
             UpdateControls();
 
@@ -59,10 +61,6 @@ namespace Src.Controllers
                 if (IsNeedJump)
                 {
                     Jump();
-                }
-                else if (_yVelocity < 0)
-                {
-                    StayOnGround();
                 }
             }
             else
@@ -85,29 +83,22 @@ namespace Src.Controllers
         
         private void MoveTowards()
         {
-            _view.Transform.position += Vector3.right * (Time.deltaTime * _movingSpeed * MovingDirection);
+            _xVelocity = Time.fixedDeltaTime * _movingSpeed * MovingDirection;
+            _view.Rigidbody.velocity = _view.Rigidbody.velocity.Change(x: _xVelocity);
             _view.Transform.localScale = ScaleDirection;
         }
 
         private void Jump()
         {
-            _yVelocity = _jumpSpeed;
+            _view.Rigidbody.AddForce(Vector2.up * _jumpSpeed, ForceMode2D.Impulse);
         }
 
-        private void StayOnGround()
-        {
-            _yVelocity = float.Epsilon;
-            _view.Transform.position = _view.Transform.position.Change(y: _groundLevel);
-        }
-        
         private void FallDown()
         {
-            if (Mathf.Abs(_yVelocity) > _jumpThreshold)
+            if (Mathf.Abs(_view.Rigidbody.velocity.y) <= _jumpThreshold)
             {
                 ChangeAnimation(AnimState.Jump);
             }
-            _yVelocity += _gravity * Time.deltaTime;
-            _view.Transform.position += Vector3.up * (Time.deltaTime * _yVelocity);
         }
     }
 }
