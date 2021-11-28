@@ -1,11 +1,11 @@
 ﻿using Platformer.Configs;
+using Platformer.Controllers;
 using Platformer.Models;
-using Src.Controllers;
 using UnityEngine;
 
 namespace Platformer.Views
 {
-    public class EnemiesConfigurator : MonoBehaviour
+    public class SimpleAIConfigurator : MonoBehaviour
     {
         [SerializeField] private AIConfig _simplePatrolAIConfig;
         [SerializeField] private LevelObjectView _simplePatrolAIView;

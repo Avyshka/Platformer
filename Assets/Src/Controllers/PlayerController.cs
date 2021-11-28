@@ -1,11 +1,10 @@
-﻿using Platformer.Controllers;
-using Platformer.Enums;
+﻿using Platformer.Enums;
 using Platformer.Models;
 using Platformer.Utils;
 using Platformer.Views;
 using UnityEngine;
 
-namespace Src.Controllers
+namespace Platformer.Controllers
 {
     public class PlayerController
     {
@@ -15,7 +14,7 @@ namespace Src.Controllers
         private readonly LevelObjectView _view;
         private readonly SpriteAnimatorController _spriteAnimator;
         private readonly ContactPooler _contactPooler;
-        
+
         private float _xAxisInput;
 
         private bool _isJump;
@@ -33,7 +32,7 @@ namespace Src.Controllers
         private Vector3 ScaleDirection => _xAxisInput < 0 ? _leftScale : _rightScale;
         private bool IsGrounded => _contactPooler.IsGrounded;
         private bool IsNeedJump => _isJump && Mathf.Abs(_view.Rigidbody.velocity.y) <= _jumpThreshold;
-        
+
         public PlayerController(LevelObjectView player, SpriteAnimatorController spriteAnimator)
         {
             _view = player;
@@ -41,7 +40,7 @@ namespace Src.Controllers
             ChangeAnimation(AnimState.Idle);
             _contactPooler = new ContactPooler(_view.Collider);
         }
-        
+
         public void Update()
         {
             _spriteAnimator.Update();
@@ -56,8 +55,8 @@ namespace Src.Controllers
 
             if (IsGrounded)
             {
-                ChangeAnimation( _isMoving ? AnimState.Run : AnimState.Idle);
-                
+                ChangeAnimation(_isMoving ? AnimState.Run : AnimState.Idle);
+
                 if (IsNeedJump)
                 {
                     Jump();
@@ -68,19 +67,19 @@ namespace Src.Controllers
                 FallDown();
             }
         }
-        
+
         private void ChangeAnimation(AnimState track)
         {
             _spriteAnimator.StartAnimation(_view.Renderer, track);
         }
-        
+
         private void UpdateControls()
         {
             _xAxisInput = Input.GetAxis(InputModel.Horizontal);
             _isJump = Input.GetAxis(InputModel.Vertical) > 0;
             _isMoving = Mathf.Abs(_xAxisInput) > _movingThreshold;
         }
-        
+
         private void MoveTowards()
         {
             _xVelocity = Time.fixedDeltaTime * _movingSpeed * MovingDirection;

@@ -12,16 +12,17 @@ namespace Platformer.Managers
         private readonly List<LevelObjectView> _deathZones;
         private readonly List<LevelObjectView> _winZones;
 
-        public LevelCompleteManager(LevelObjectView characterView, List<LevelObjectView> deathZones, List<LevelObjectView> winZones)
+        public LevelCompleteManager(LevelObjectView characterView, List<LevelObjectView> deathZones,
+            List<LevelObjectView> winZones)
         {
             _characterView = characterView;
             _deathZones = deathZones;
             _winZones = winZones;
-            
+
             _startPosition = _characterView.Transform.position;
             _characterView.OnLevelObjectContact += OnLevelObjectContact;
         }
-        
+
         private void OnLevelObjectContact(LevelObjectView contactView)
         {
             if (_deathZones.Contains(contactView))
@@ -29,7 +30,7 @@ namespace Platformer.Managers
                 _characterView.Transform.position = _startPosition;
             }
         }
-        
+
         public void Dispose()
         {
             _characterView.OnLevelObjectContact -= OnLevelObjectContact;

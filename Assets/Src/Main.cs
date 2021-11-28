@@ -3,7 +3,6 @@ using Platformer.Configs;
 using Platformer.Controllers;
 using Platformer.Managers;
 using Platformer.Views;
-using Src.Controllers;
 using UnityEngine;
 
 namespace Platformer
@@ -29,7 +28,7 @@ namespace Platformer
 
         private CannonAimController _cannonAimController;
         private BulletEmitterController _bulletEmitterController;
-        
+
         private void Start()
         {
             _playerConfig = Resources.Load<SpriteAnimatorConfig>("PlayerAnimCfg");
@@ -40,7 +39,7 @@ namespace Platformer
                 _cameraController = new CameraController(playerView.Transform, Camera.main.transform, background);
                 new LevelCompleteManager(playerView, deathZones, winZones);
             }
-            
+
             _coinsConfig = Resources.Load<SpriteAnimatorConfig>("CoinAnimCfg");
             if (_coinsConfig)
             {

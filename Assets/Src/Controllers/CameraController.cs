@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Src.Controllers
+namespace Platformer.Controllers
 {
     public class CameraController
     {

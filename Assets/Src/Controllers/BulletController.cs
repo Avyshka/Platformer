@@ -1,7 +1,7 @@
 ﻿using Platformer.Views;
 using UnityEngine;
 
-namespace Src.Controllers
+namespace Platformer.Controllers
 {
     public class BulletController
     {
@@ -18,7 +18,7 @@ namespace Src.Controllers
         {
             _view.gameObject.SetActive(value);
         }
-        
+
         public void SetVelocity(Vector3 velocity)
         {
             _velocity = velocity;
@@ -26,7 +26,7 @@ namespace Src.Controllers
             var axis = Vector3.Cross(Vector3.left, _velocity);
             _view.Transform.rotation = Quaternion.AngleAxis(angle, axis);
         }
-        
+
         public void Throw(Vector3 spawnPosition, Vector3 velocity)
         {
             SetActive(true);

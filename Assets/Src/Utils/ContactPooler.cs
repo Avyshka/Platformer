@@ -8,7 +8,7 @@ namespace Platformer.Utils
         private const float _collThreshold = 0.6f;
         private int _contactCount;
         private Collider2D _collider;
-        
+
         public bool IsGrounded { get; private set; }
         public bool HasLeftContact { get; private set; }
         public bool HasRightContact { get; private set; }
@@ -17,7 +17,7 @@ namespace Platformer.Utils
         {
             _collider = collider;
         }
-        
+
         public void Update()
         {
             IsGrounded = false;

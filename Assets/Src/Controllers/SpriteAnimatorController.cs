@@ -34,7 +34,7 @@ namespace Platformer.Controllers
         private void ChangeAnimation(SequenceAnimation animation, AnimState track)
         {
             animation.Sleep = false;
-            
+
             if (animation.Track != track)
             {
                 var config = _config.Sequences.Find(sequence => sequence.Track == track);
