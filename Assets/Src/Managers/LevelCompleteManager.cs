@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Platformer.Controllers;
 using Platformer.Views;
 using UnityEngine;
 
