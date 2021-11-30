@@ -17,6 +17,7 @@ namespace Platformer
         [SerializeField] private List<LevelObjectView> chestViews;
         [SerializeField] private List<LevelObjectView> deathZones;
         [SerializeField] private List<LevelObjectView> winZones;
+        [SerializeField] private CannonView cannonView;
 
         private SpriteAnimatorConfig _playerConfig;
         private SpriteAnimatorController _spriteAnimator;
@@ -26,6 +27,9 @@ namespace Platformer
 
         private SpriteAnimatorConfig _coinsConfig;
         private SpriteAnimatorController _coinsAnimator;
+
+        private CannonAimController _cannonAimController;
+        private BulletEmitterController _bulletEmitterController;
         
         private void Start()
         {
@@ -44,6 +48,9 @@ namespace Platformer
                 _coinsAnimator = new SpriteAnimatorController(_coinsConfig);
                 var coinsManager = new CoinsManager(playerView, _coinsAnimator, coinViews, chestViews);
             }
+
+            _cannonAimController = new CannonAimController(cannonView.muzzleTransform, playerView.Transform);
+            _bulletEmitterController = new BulletEmitterController(cannonView.bulletViews, cannonView.emitterTransform);
         }
 
         private void Update()
@@ -51,6 +58,8 @@ namespace Platformer
             _playerController.Update();
             _cameraController.Update();
             _coinsAnimator.Update();
+            _cannonAimController.Update();
+            _bulletEmitterController.Update();
         }
     }
 }
