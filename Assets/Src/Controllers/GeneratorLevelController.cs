@@ -1,6 +1,8 @@
 ﻿using System;
 using Platformer.Enums;
+using Platformer.MarchingSquares;
 using Platformer.Views;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,6 +11,7 @@ namespace Platformer.Controllers
     public class GeneratorLevelController
     {
         private const int CountWall = 4;
+        private const bool IsMarchingSquaresMethod = false;
 
         private readonly Tilemap _tilemap;
         private readonly Tile _groundTile;
@@ -22,6 +25,8 @@ namespace Platformer.Controllers
 
         private readonly MapTile[,] _map;
 
+        private MarchingSquaresGeneratorLevel _marchingSquaresGeneratorLevel = new MarchingSquaresGeneratorLevel();
+        
         public GeneratorLevelController(GeneratorLevelView levelView)
         {
             _tilemap = levelView.Tilemap;
@@ -44,8 +49,16 @@ namespace Platformer.Controllers
                 SmoothMap();
             }
 
-            AddGrass();
-            DrawTiles();
+            if (IsMarchingSquaresMethod)
+            {
+                _marchingSquaresGeneratorLevel.GenerateGrid(_map, 1);
+                _marchingSquaresGeneratorLevel.DrawTilesOnMap(_tilemap, _groundTile);
+            }
+            else
+            {
+                AddGrass();
+                DrawTiles();
+            }
         }
 
         private void RandomFillMap()
