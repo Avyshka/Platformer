@@ -16,6 +16,7 @@ namespace Platformer
         [SerializeField] private List<LevelObjectView> deathZones;
         [SerializeField] private List<LevelObjectView> winZones;
         [SerializeField] private CannonView cannonView;
+        [SerializeField] private GeneratorLevelView generatorLevelView;
 
         private SpriteAnimatorConfig _playerConfig;
         private SpriteAnimatorController _spriteAnimator;
@@ -28,6 +29,8 @@ namespace Platformer
 
         private CannonAimController _cannonAimController;
         private BulletEmitterController _bulletEmitterController;
+        
+        private GeneratorLevelController _generatorLevelController;
 
         private void Start()
         {
@@ -49,6 +52,8 @@ namespace Platformer
 
             _cannonAimController = new CannonAimController(cannonView.muzzleTransform, playerView.Transform);
             _bulletEmitterController = new BulletEmitterController(cannonView.bulletViews, cannonView.emitterTransform);
+            _generatorLevelController = new GeneratorLevelController(generatorLevelView);
+            _generatorLevelController.Init();
         }
 
         private void Update()
